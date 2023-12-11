@@ -6,7 +6,7 @@ import homeassistant.helpers.config_validation as cv
 # name for the integration.
 DOMAIN = "danawa_shopping"
 NAME = "Danawa Shopping"
-VERSION = "1.0.6"
+VERSION = "1.0.0"
 
 CONF_OPTION_MODIFY = "option_modify"
 CONF_OPTION_ADD = "option_add"
@@ -62,19 +62,6 @@ CONF_URL = "https://search.danawa.com/dsearch.php?query="
 DISPLAY_COUNT = 1
 DISPLAY_START = 1
 REFRESH_MIN = 60
-
-ATTR_LINK = "link"
-ATTR_TITLE = "title"
-ATTR_HPRICE = "hprice"
-ATTR_LPRICE = "lprice"
-ATTR_IMAGE = "image"
-ATTR_BRAND = "brand"
-ATTR_MAKER = "maker"
-ATTR_MALLNAME = "mallName"
-ATTR_CATEGORY1 = "category1"
-ATTR_CATEGORY2 = "category2"
-ATTR_CATEGORY3 = "category3"
-ATTR_CATEGORY4 = "category4"
 
 OPTIONS = [
     (CONF_WORD, "", cv.string),

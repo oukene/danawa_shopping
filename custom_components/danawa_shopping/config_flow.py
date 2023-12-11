@@ -47,8 +47,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user", data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_CLIENT_ID): cv.string,
-                    vol.Required(CONF_CLIENT_SECRET): cv.string
                 }), errors=errors
         )
 

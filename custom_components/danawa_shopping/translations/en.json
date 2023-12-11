@@ -6,18 +6,15 @@
                 "description": "Do you want to set up?"
             },
             "user": {
-                "data": {
-                    "client_id": "X-Naver-Client-Id",
-                    "client_id2": "X-Naver-Client-Secret"
-                },
-                "description": "Enter Naver Shopping API account information"
+                "data": {},
+                "description": "Click ok to complete installation"
             }
         }
     },
     "options": {
         "step": {
             "init": {
-                "title": "Naver Shopping Options",
+                "title": "Danawa Shopping Options",
                 "data": {
                     "option_select": "What to do?"
                 }
@@ -33,9 +30,8 @@
                 "title": "add search keyword",
                 "data": {
                     "word": "search keyword",
-                    "sort_type": "sort type",
+                    "sort_type": "search type",
                     "filter": "search filter",
-                    "exclude": "exclude filter",
                     "refresh_period": "refresh period(minute)",
                     "add_another": "add more search keyword"
                 }
