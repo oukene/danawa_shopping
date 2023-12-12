@@ -19,8 +19,6 @@ CONF_OPTIONS = [
     CONF_OPTION_ADD
 ]
 
-CONF_CLIENT_ID = "client_id"
-CONF_CLIENT_SECRET = "client_id2"
 CONF_SEARCH_KEYWORD = "search_keyword"
 CONF_KEYWORDS = "keywords"
 CONF_WORD = "word"
@@ -28,7 +26,6 @@ CONF_REFRESH_PERIOD = "refresh_period"
 CONF_SORT_TYPE = "sort_type"
 
 CONF_FILTER = "filter"
-CONF_EXCLUDE = "exclude"
 
 FILTER_TYPES = {
     "쿠팡와우할인": "CoupangMemberSort",
@@ -58,12 +55,4 @@ SORT_TYPES_REVERSE = {
 
 CONF_URL = "https://search.danawa.com/dsearch.php?query="
 
-
-DISPLAY_COUNT = 1
-DISPLAY_START = 1
 REFRESH_MIN = 60
-
-OPTIONS = [
-    (CONF_WORD, "", cv.string),
-    (CONF_REFRESH_PERIOD, REFRESH_MIN, vol.All(vol.Coerce(float), vol.Range(0, 1))),
-]

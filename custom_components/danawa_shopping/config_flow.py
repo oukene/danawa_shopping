@@ -115,14 +115,14 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         
                 # _LOGGER.debug("option delete : " + str(user_input.get(CONF_OPTION_DELETE)))
                 if user_input.get(CONF_OPTION_DELETE):
-                    _LOGGER.debug("delete option")
                     er.async_get(self.hass).async_remove(entity_id=entity_id)
 
                     try:
                         self.data[CONF_KEYWORDS].remove(conf)
                     except:
                         """"""
-
+                    _LOGGER.debug("delete option : " + str(self.data))
+                    self.data["modifydatetime"] = datetime.now()
                     return self.async_create_entry(title=NAME, data=self.data)
                     
 
@@ -171,16 +171,17 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         errors: Dict[str, str] = {}
         if user_input is not None:
             if not errors:
-                conf = None
-                for k in self.data[CONF_KEYWORDS]:
+                if self._selected_option:
+                    for k in self.data[CONF_KEYWORDS]:
 
-                    _LOGGER.debug("input : " + str(user_input.get(CONF_WORD) + user_input.get(CONF_SORT_TYPE)))
-                    _LOGGER.debug(
-                        "find : " + str(k.get(CONF_WORD) + "-" +
-                                        SORT_TYPES_REVERSE[k.get(CONF_SORT_TYPE)]))
-                    if user_input.get(CONF_WORD) + "-" + user_input.get(CONF_SORT_TYPE) == k.get(CONF_WORD) + "-" + SORT_TYPES_REVERSE[k.get(CONF_SORT_TYPE)]:
-                        self.data[CONF_KEYWORDS].remove(k)
-                        break
+                        _LOGGER.debug(
+                            "input : " + str(self._selected_option.get(CONF_WORD) + "-" + self._selected_option.get(CONF_SORT_TYPE)))
+                        _LOGGER.debug(
+                            "find : " + str(k.get(CONF_WORD) + "-" +
+                                            SORT_TYPES_REVERSE[k.get(CONF_SORT_TYPE)]))
+                        if self._selected_option.get(CONF_WORD) + "-" + SORT_TYPES_REVERSE[self._selected_option.get(CONF_SORT_TYPE)] == k.get(CONF_WORD) + "-" + SORT_TYPES_REVERSE[k.get(CONF_SORT_TYPE)]:
+                            self.data[CONF_KEYWORDS].remove(k)
+                            break
 
                 # Input is valid, set data.
                 self.data[CONF_KEYWORDS].append(

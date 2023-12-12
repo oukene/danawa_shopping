@@ -157,6 +157,8 @@ class DanawaShoppingSensor(SensorBase):
 
         self.entity_id = async_generate_entity_id(
             ENTITY_ID_FORMAT, "{}_{}_{}".format(NAME, word, sort_type), hass=hass)
+        self._attr_unique_id = async_generate_entity_id(
+            ENTITY_ID_FORMAT, "{}_{}_{}_{}".format(NAME, word, sort_type, filter), hass=hass)
         self._attr_name = "{}-{}".format(word, SORT_TYPES_REVERSE[sort_type])
         self._attr_unit_of_measurement = "KRW"
         self._attr_extra_state_attributes = {}
@@ -165,8 +167,6 @@ class DanawaShoppingSensor(SensorBase):
         self._refresh_period = refresh_period
         self._sort_type = sort_type
         self._filter = filter
-
-        self._attr_unique_id = self.entity_id
         # self._device_class = SENSOR_TYPES[sensor_type][0]
         self._device = device
         
