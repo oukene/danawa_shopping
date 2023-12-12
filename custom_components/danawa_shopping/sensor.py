@@ -5,6 +5,7 @@
 # to display it in the UI (for know types). The unit_of_measurement property tells HA
 # what the unit is, so it can display the correct range. For predefined types (such as
 # battery), the unit_of_measurement should match what's expected.
+import ssl
 import logging
 from threading import Timer
 import aiohttp
@@ -168,6 +169,12 @@ class DanawaShoppingSensor(SensorBase):
         self._attr_unique_id = self.entity_id
         # self._device_class = SENSOR_TYPES[sensor_type][0]
         self._device = device
+        
+        self._url = CONF_URL + str(self._word) + "&sort=" + str(self._sort_type)
+        for filter in self._filter:
+            self._url = self._url + "&" + FILTER_TYPES[filter] + "=Y"
+        self._attr_extra_state_attributes["URL"] = self._url
+
         self._loop = asyncio.get_event_loop()
         Timer(1, self.refreshTimer).start()
     
@@ -175,19 +182,15 @@ class DanawaShoppingSensor(SensorBase):
         self._loop.create_task(self.get_price())
         Timer(self._refresh_period*60, self.refreshTimer).start()
 
+
     async def get_price(self):
         try:
-            _LOGGER.debug("filter : " +str(self._filter))
-            url = CONF_URL + str(self._word) + "&sort=" + str(self._sort_type)
+            custom_ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+            custom_ssl_context.options |= 0x00040000
 
-            for filter in self._filter:
-                url = url + "&" + FILTER_TYPES[filter] + "=Y"
-
-            self._attr_extra_state_attributes["URL"] = url
-                
-            _LOGGER.debug("url : " + str(url))
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url) as response:
+            connector = aiohttp.TCPConnector(ssl=custom_ssl_context)
+            async with aiohttp.ClientSession(connector=connector) as session:
+                async with session.get(self._url) as response:
                     raw_data = await response.read()
                     soup = bs(raw_data, 'html.parser')
                     price = soup.select_one(".click_log_product_standard_price_")
