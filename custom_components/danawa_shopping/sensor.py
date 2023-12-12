@@ -18,6 +18,7 @@ from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.components.sensor import SensorEntity
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
+import traceback
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -194,16 +195,18 @@ class DanawaShoppingSensor(SensorBase):
                     raw_data = await response.read()
                     soup = bs(raw_data, 'html.parser')
                     price = soup.select_one(".click_log_product_standard_price_")
-                    _LOGGER.debug("price : " + str(price.text))
+                    image = soup.select_one(".click_log_product_standard_img_ img")["src"] if soup.select_one(".click_log_product_standard_img_ img") is not None else None
+                    if price is None:
+                        price = soup.select_one(".price_sect")
+                    if image is None:
+                        image = soup.select_one(".click_log_product_searched_img_ img")["src"]
                     self._attr_native_value = int(price.text.replace("원", "").replace(",", ""))
-                    image = soup.select_one(".click_log_product_standard_img_ img")["src"]
-                    _LOGGER.debug("image : " + str(image))
                     self._attr_entity_picture = image
 
             self._attr_extra_state_attributes["last_refresh_time"] = datetime.now().strftime("%Y-%m-%d %H:%M")
             self._device.publish_updates()
         except Exception as e:
-            _LOGGER.error("get price error : " + str(e))
+            _LOGGER.error("get price error : " + traceback.format_exc())
 
         finally:
             """"""
