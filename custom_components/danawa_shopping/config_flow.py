@@ -221,7 +221,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                         vol.Optional(CONF_FILTER, description={"suggested_value": self._selected_option.get(CONF_FILTER, None)})
                             : selector.SelectSelector(selector.SelectSelectorConfig(options=list(FILTER_TYPES.keys()), custom_value=False, multiple=True,
                                                                                                                                                mode=selector.SelectSelectorMode.DROPDOWN)),
-                        vol.Required(CONF_REFRESH_PERIOD, default=REFRESH_MIN): int,
+                        vol.Required(CONF_REFRESH_PERIOD, default=self._selected_option.get(CONF_REFRESH_PERIOD, REFRESH_MIN)): int,
                         #vol.Optional(CONF_OPTION_ADD): selector.BooleanSelector(selector.BooleanSelectorConfig())
                     }
             ), errors=errors
