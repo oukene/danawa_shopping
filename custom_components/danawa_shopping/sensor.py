@@ -189,8 +189,17 @@ class DanawaShoppingSensor(SensorBase):
             custom_ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
             custom_ssl_context.options |= 0x00040000
 
+            headers = {
+                "User-Agent": (
+                    "mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/78.0.3904.70 safari/537.36"
+                ),
+                "Referer": (
+                    "https://danawa.com"
+                )
+            }
+
             connector = aiohttp.TCPConnector(ssl=custom_ssl_context)
-            async with aiohttp.ClientSession(connector=connector) as session:
+            async with aiohttp.ClientSession(connector=connector, headers=headers) as session:
                 async with session.get(self._url) as response:
                     raw_data = await response.read()
                     soup = bs(raw_data, 'html.parser')
