@@ -5,13 +5,13 @@
 # to display it in the UI (for know types). The unit_of_measurement property tells HA
 # what the unit is, so it can display the correct range. For predefined types (such as
 # battery), the unit_of_measurement should match what's expected.
-import ssl
 import logging
 from threading import Timer
 import aiohttp
 
 import json
 import asyncio
+from homeassistant.util import ssl
 
 from .const import *
 from homeassistant.helpers.entity import async_generate_entity_id
@@ -186,7 +186,7 @@ class DanawaShoppingSensor(SensorBase):
 
     async def get_price(self):
         try:
-            custom_ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+            custom_ssl_context = ssl.get_default_context()
             custom_ssl_context.options |= 0x00040000
 
             headers = {
